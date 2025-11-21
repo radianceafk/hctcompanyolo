@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>GSL home page</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/unnamed.png" rel="icon">
+  <link href="assets/img/unnamed.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css">
+
+  <!-- TomTom Maps -->
+  <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.23.0/maps/maps.css'>
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.23.0/maps/maps-web.min.js"></script>
+
+  <!-- Firebase Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS for tracking page -->
+  <style>
+    .tracking-container {
+      padding: 100px 20px 50px;
+      min-height: 100vh;
+    }
+    
+    .tracking-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .tracking-header {
+      background: #0d6efd;
+      color: white;
+      padding: 20px 25px;
+      border-radius: 15px 15px 0 0;
+      margin: -25px -25px 25px -25px;
+    }
+    
+    #trackingMap {
+      height: 400px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .progress-container {
+      margin: 20px 0;
+    }
+    
+    .location-marker {
+      background-color: #0d6efd;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      margin: 5px 0;
+    }
+    
+    .estimated-time {
+      background: #0d6efd;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 14px;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    
+    .ship-icon {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='%230066cc' d='M256 0c-17.7 0-32 14.3-32 32V172.9c0 6.5-2.6 12.7-7.2 17.2L112.2 320 69.4 297.5c-10.3-6.4-23.1-7.3-34.2-2.5S16 308.6 16 320v64c0 12.6 7.4 24.1 19 29.2s25 3.1 34.4-3.1l57.6-36L256 301.9V480c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32s-14.3-32-32-32H320V301.9l129 72.2c9.4 6.2 21.6 7.2 31.9 2.9s18.2-13 19.8-24.3l10.7-64c1.3-7.8-1.3-15.7-6.9-21.4s-13.8-8.8-21.6-8.8c-2.2 0-4.4 .3-6.5 .8L320 274.1V32c0-17.7-14.3-32-32-32H256zM129.2 323.5L256 243.9V96h64V252.1l126.8 79.6-7.2 43.2L352 322.1V480c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H416V322.1l-86.8 48.5c-5.5 3.1-11.9 3.6-17.8 1.4s-10.5-7.2-12.1-13.2L256 301.9l-43.3 57.1c-2.9 6.2-9.2 10.3-16.1 10.3c-2.7 0-5.4-.5-7.9-1.5s-4.8-2.6-6.7-4.8c-3.5-4-5-9.3-4.1-14.5l10.1-60.8z'/%3E%3C/svg%3E") no-repeat center center;
+      background-size: contain;
+      width: 30px;
+      height: 30px;
+    }
+    
+    .ship-marker {
+      transition: all 1s ease;
+    }
+    
+    .tracking-modal .modal-content {
+      border-radius: 15px;
+    }
+    
+    .tracking-not-found {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .tracking-not-found i {
+      font-size: 5rem;
+      color: #6c757d;
+      margin-bottom: 20px;
+    }
+
+    /* Goods Images Styles */
+    .goods-images-container {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+    }
+
+    .goods-images-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .goods-images-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .goods-image-item {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .goods-image-item:hover {
+      transform: scale(1.05);
+    }
+
+    .goods-image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .goods-image-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .goods-modal-content {
+      margin: auto;
+      display: block;
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .goods-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .goods-modal-close:hover {
+      color: #bbb;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .goods-image-item {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .goods-modal-content {
+        max-width: 95%;
+        max-height: 95%;
+      }
+    }
+
+    /* TomTom Map Customization */
+    .tomtom-map {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto">
+        <h1 class="sitename">GSL</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html" class="active">Home<br></a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="get-a-quote.html">Get a Quote</a>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section with Tracking Form -->
+    <section id="hero" class="hero section dark-background">
+
+      <img src="assets/img/world-dotted-map.png" alt="" class="hero-bg" data-aos="fade-in">
+
+      <div class="container">
+        <div class="row gy-4 d-flex justify-content-between">
+          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+            <h2 data-aos="fade-up">Track Your Shipment</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Enter your tracking number below to get real-time updates on your shipment's location and estimated arrival time.</p>
+
+            <form id="trackingForm" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
+              <input type="text" class="form-control" placeholder="Enter your tracking number. e.g. GSL-123456" id="trackingInput" required>
+              <button type="submit" class="btn btn-primary">Track Shipment</button>
+            </form>
+
+            <div class="row gy-4" data-aos="fade-up" data-aos-delay="300">
+
+              <div class="col-lg-3 col-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="125" data-purecounter-duration="0" class="purecounter">125</span>
+                  <p>Countries Served</p>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-3 col-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="985" data-purecounter-duration="0" class="purecounter">985</span>
+                  <p>Successful Deliveries</p>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-3 col-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="350" data-purecounter-duration="0" class="purecounter">350</span>
+                  <p>Corporate Clients</p>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-3 col-6">
+                <div class="stats-item text-center w-100 h-100">
+                  <span data-purecounter-start="0" data-purecounter-end="45" data-purecounter-duration="0" class="purecounter">45</span>
+                  <p>Years Experience</p>
+                </div>
+              </div><!-- End Stats Item -->
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
+            <img src="assets/img/hero-img.svg" class="img-fluid mb-3 mb-lg-0" alt="Shipment Tracking">
+          </div>
+
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- Tracking Results Section (Initially Hidden) -->
+    <section id="tracking-results" class="tracking-container" style="display: none;">
+      <div class="container">
+        <div class="tracking-card">
+          <div class="tracking-header">
+            <h3><i class="bi bi-geo-alt me-2"></i>Shipment Tracking: <span id="trackingNumberDisplay"></span></h3>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Shipment Details</h4>
+              <div class="mb-3">
+                <strong>Client Name:</strong> <span id="clientName"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Client Address:</strong> <span id="clientAddress"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Goods Description:</strong> <span id="goodsDescription"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Weight:</strong> <span id="goodsWeight"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Estimated Delivery:</strong> <span id="estimatedDelivery"></span>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <h4>Route Information</h4>
+              <div class="mb-3">
+                <strong>Origin:</strong> <span id="origin"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Destination:</strong> <span id="destination"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Current Location:</strong> <span id="currentLocation" class="location-marker"></span>
+              </div>
+              <div class="mb-3">
+                <strong>Status:</strong> <span id="status"></span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Goods Images Section -->
+          <div class="goods-images-container" id="goodsImagesContainer" style="display: none;">
+            <h4 class="goods-images-title">Goods Images</h4>
+            <div class="goods-images-grid" id="goodsImagesGrid">
+              <!-- Images will be populated here -->
+            </div>
+          </div>
+          
+          <div id="trackingMap" class="tomtom-map"></div>
+          
+          <div class="progress-container">
+            <div class="d-flex justify-content-between">
+              <span id="originLabel">Origin</span>
+              <span id="destinationLabel">Destination</span>
+            </div>
+            <div class="progress" style="height: 20px;">
+              <div id="journeyProgress" class="progress-bar" role="progressbar" style="width: 0%;" 
+                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="text-center mt-2">
+              <span id="progressPercentage">0% Complete</span>
+              <div id="estimatedTime" class="estimated-time">
+                <i class="bi bi-clock me-1"></i>ETA: Calculating...
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tracking History removed as requested -->
+          
+        </div>
+        
+        <div class="text-center mt-4">
+          <button id="trackAnotherBtn" class="btn btn-primary">
+            <i class="bi bi-search me-1"></i>Track Another Shipment
+          </button>
+        </div>
+      </div>
+    </section><!-- /Tracking Results Section -->
+
+    <!-- Goods Image Modal -->
+    <div id="goodsImageModal" class="goods-image-modal">
+      <span class="goods-modal-close">&times;</span>
+      <img class="goods-modal-content" id="modalImage">
+    </div>
+
+    <!-- Tracking Not Found Section (Initially Hidden) -->
+    <section id="tracking-not-found" class="tracking-container" style="display: none;">
+      <div class="container">
+        <div class="tracking-card tracking-not-found">
+          <i class="bi bi-question-circle"></i>
+          <h3>Shipment Not Found</h3>
+          <p>We couldn't find a shipment with the tracking number <strong id="notFoundTrackingNumber"></strong>.</p>
+          <p>Please check your tracking number and try again, or <a href="contact.html">contact our support team</a> for assistance.</p>
+          <button id="tryAgainBtn" class="btn btn-primary mt-3">
+            <i class="bi bi-arrow-repeat me-1"></i>Try Again
+          </button>
+        </div>
+      </div>
+    </section><!-- /Tracking Not Found Section -->
+
+    <!-- Featured Services Section -->
+    <section id="featured-services" class="featured-services section">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon flex-shrink-0"><i class="fa-solid fa-cart-flatbed"></i></div>
+            <div>
+              <h4 class="title">Air Freight</h4>
+              <p class="description">Fast and reliable air cargo services for time-sensitive shipments with real-time tracking and expedited customs clearance.</p>
+              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+          <!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck"></i></div>
+            <div>
+              <h4 class="title">Ocean Freight</h4>
+              <p class="description">Cost-effective sea shipping solutions for large volume cargo with comprehensive container options and port-to-port service.</p>
+              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <div>
+              <h4 class="title">Land Transportation</h4>
+              <p class="description">Efficient road freight services across the Middle East with specialized handling for perishable and hazardous materials.</p>
+              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Featured Services Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6 position-relative align-self-start order-lg-last order-first" data-aos="fade-up" data-aos-delay="200">
+            <img src="assets/img/about.jpg" class="img-fluid" alt="">
+            <a href="https://youtu.be/C7eLJCNf_wc?si=yfRKayoaLjG2PCp8" class="glightbox pulsating-play-btn"></a>
+          </div>
+
+          <div class="col-lg-6 content order-last  order-lg-first" data-aos="fade-up" data-aos-delay="100">
+            <h3>About GSL</h3>
+            <p>
+              Established in Dubai, Global Shipping & Logistics has been providing exceptional freight forwarding and supply chain solutions for over four decades. Our strategic location in the heart of the Middle East allows us to efficiently connect markets across continents.
+            </p>
+            <ul>
+              <li>
+                <i class="bi bi-diagram-3"></i>
+                <div>
+                  <h5>Global Network with Local Expertise</h5>
+                  <p>With partners in 125 countries, we offer worldwide coverage with deep understanding of regional regulations and market dynamics.</p>
+                </div>
+              </li>
+              <li>
+                <i class="bi bi-fullscreen-exit"></i>
+                <div>
+                  <h5>Technology-Driven Solutions</h5>
+                  <p>Our advanced tracking systems and digital platforms provide complete visibility and control over your shipments from origin to destination.</p>
+                </div>
+              </li>
+              <li>
+                <i class="bi bi-broadcast"></i>
+                <div>
+                  <h5>Customized Logistics Programs</h5>
+                  <p>We develop tailored supply chain solutions that address your specific industry requirements and business objectives.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Services Section -->
+    <section id="services" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>Our Services<br></span>
+        <h2>Our Services</h2>
+        <p>Comprehensive logistics solutions tailored to meet your specific business needs</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-1.jpg" alt="" class="img-fluid">
+              </div>
+              <h3>Storage</h3>
+              <p>Secure warehouse facilities in Dubai with temperature-controlled options, inventory management, and distribution services.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-2.jpg" alt="" class="img-fluid">
+              </div>
+              <h3><a href="#" class="stretched-link">Logistics</a></h3>
+              <p>End-to-end supply chain management including transportation, warehousing, and inventory optimization for maximum efficiency.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-3.jpg" alt="" class="img-fluid">
+              </div>
+              <h3><a href="#" class="stretched-link">Cargo</a></h3>
+              <p>Specialized cargo handling for oversized, hazardous, and high-value goods with appropriate certifications and insurance coverage.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-4.jpg" alt="" class="img-fluid">
+              </div>
+              <h3><a href="#" class="stretched-link">Trucking</a></h3>
+              <p>Reliable road freight services across the GCC with fleet management, cross-border documentation, and timely delivery guarantees.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-5.jpg" alt="" class="img-fluid">
+              </div>
+              <h3>Packaging</h3>
+              <p>Professional packaging solutions designed to protect your goods during transit, including crating, palletizing, and labeling services.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/service-6.jpg" alt="" class="img-fluid">
+              </div>
+              <h3><a href="#" class="stretched-link">Warehousing</a></h3>
+              <p>State-of-the-art storage facilities with advanced security systems, inventory management, and just-in-time distribution capabilities.</p>
+            </div>
+          </div><!-- End Card Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
+    <!-- Call To Action Section -->
+    <section id="call-to-action" class="call-to-action section dark-background">
+
+      <img src="assets/img/cta-bg.jpg" alt="">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-xl-10">
+            <div class="text-center">
+              <h3>Optimize Your Supply Chain</h3>
+              <p>Partner with GSL for reliable, efficient shipping from Dubai to global markets. Our expertise in international logistics ensures your cargo moves seamlessly through customs and reaches its destination on time and in perfect condition.</p>
+              <a class="cta-btn" href="#">Request Consultation</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Call To Action Section -->
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>Why Choose GSL</span>
+        <h2>Why Choose GSL</h2>
+        <p>Experience the difference of working with a logistics partner committed to your success</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <img src="assets/img/features-1.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+            <h3>Decades of Expertise in Global Shipping</h3>
+            <p class="fst-italic">
+              With over 45 years in the industry, we have developed unparalleled knowledge of international trade routes and regulations.
+            </p>
+            <ul>
+              <li><i class="bi bi-check"></i><span> In-depth knowledge of customs procedures in 125 countries</span></li>
+              <li><i class="bi bi-check"></i> <span>Established relationships with major carriers and ports worldwide</span></li>
+              <li><i class="bi bi-check"></i> <span>Expert handling of complex logistics challenges</span></li>
+            </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+            <img src="assets/img/features-2.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+            <h3>Advanced Technology Platform</h3>
+            <p class="fst-italic">
+              Our digital solutions provide complete visibility and control over your supply chain.
+            </p>
+            <p>
+              Real-time tracking, automated documentation, and predictive analytics ensure your shipments move efficiently through the supply chain. Our customer portal provides 24/7 access to shipment status, documents, and performance metrics, enabling informed decision-making and proactive management of your logistics.
+            </p>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
+            <img src="assets/img/features-3.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up">
+            <h3>Customized Logistics Solutions</h3>
+            <p>We understand that every business has unique requirements. Our team works closely with you to develop tailored logistics programs that address your specific challenges and opportunities.</p>
+            <ul>
+              <li><i class="bi bi-check"></i> <span>Industry-specific expertise across multiple sectors</span></li>
+              <li><i class="bi bi-check"></i><span> Flexible solutions that scale with your business</span></li>
+              <li><i class="bi bi-check"></i> <span>Dedicated account management for personalized service</span>.</li>
+            </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out">
+            <img src="assets/img/features-4.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up">
+            <h3>Commitment to Reliability and Excellence</h3>
+            <p class="fst-italic">
+              Our track record of delivering on promises has made us the preferred logistics partner for businesses across industries.
+            </p>
+            <p>
+              With a 98.7% on-time delivery rate and comprehensive insurance coverage, you can trust GSL with your most important shipments. Our quality management system is certified to international standards, ensuring consistent service excellence across all our operations.
+            </p>
+          </div>
+        </div><!-- Features Item -->
+
+      </div>
+
+    </section><!-- /Features Section -->
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section dark-background">
+
+      <img src="assets/img/testimonials-bg.jpg" class="testimonials-bg" alt="">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <h3>Ahmed Al-Mansoori</h3>
+                <h4>Supply Chain Director, Emirates Trading</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>GSL has transformed our logistics operations. Their expertise in customs clearance and reliable scheduling has reduced our transit times by 35% and eliminated unexpected delays. A truly professional partner.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <h3>Sarah Johnson</h3>
+                <h4>Operations Manager, European Imports Ltd.</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>We've been working with GSL for over five years for our shipments from Dubai to across Europe. Their communication is exceptional, and they've never missed a delivery window. Their digital tracking platform gives us complete visibility throughout the journey.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <h3>Rajiv Patel</h3>
+                <h4>CEO, Global Textiles Exchange</h4>
+                <div class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>GSL's handling of our delicate textile shipments has been outstanding. Their specialized packaging and careful transportation have dramatically reduced damage claims. Their team understands the specific requirements of our industry.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <h3>Michael Zhang</h3>
+                <h4>Procurement Director, Asia-Pacific Electronics</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>The complexity of shipping high-value electronics requires a logistics partner with precision and reliability. GSL has consistently met our strict requirements for security, temperature control, and delivery timelines.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                <h3>Fatima Al-Zahra</h3>
+                <h4>Logistics Coordinator, Medical Supplies Co.</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>When we needed to ship temperature-sensitive medical supplies under tight deadlines, GSL delivered flawlessly. Their compliance expertise and careful handling give us complete confidence in their services for our critical shipments.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section><!-- /Testimonials Section -->
+
+    <!-- Faq Section -->
+    <section id="faq" class="faq section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span>Frequently Asked Questions</span>
+        <h2>Frequently Asked Questions</h2>
+        <p>Find answers to common questions about our shipping and logistics services</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row justify-content-center">
+
+          <div class="col-lg-10">
+
+            <div class="faq-container">
+
+              <div class="faq-item faq-active" data-aos="fade-up" data-aos-delay="200">
+                <i class="faq-icon bi bi-question-circle"></i>
+                <h3>What documents are required for shipping from Dubai?</h3>
+                <div class="faq-content">
+                  <p>Typically, you'll need a commercial invoice, packing list, certificate of origin, and bill of lading. Specific requirements vary by destination country and commodity type. Our team will provide you with a complete checklist based on your shipment details.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                <i class="faq-icon bi bi-question-circle"></i>
+                <h3>How long does shipping from Dubai to Europe typically take?</h3>
+                <div class="faq-content">
+                  <p>Transit times vary by service level: Economy sea freight takes 20-30 days, Standard air freight takes 7-10 days, and Express air freight takes 2-4 days. These are door-to-door estimates including customs clearance at destination.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                <i class="faq-icon bi bi-question-circle"></i>
+                <h3>Do you handle customs clearance in destination countries?</h3>
+                <div class="faq-content">
+                  <p>Yes, we offer comprehensive customs brokerage services in all countries we serve. Our network of local experts ensures smooth clearance and compliance with import regulations. We manage all documentation, duties, and taxes on your behalf.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                <i class="faq-icon bi bi-question-circle"></i>
+                <h3>What types of cargo do you specialize in?</h3>
+                <div class="faq-content">
+                  <p>We handle general merchandise, perishables, hazardous materials, high-value goods, oversized equipment, and temperature-sensitive products. Our team has specific expertise in electronics, textiles, automotive parts, medical supplies, and retail goods.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
+                <i class="faq-icon bi bi-question-circle"></i>
+                <h3>How do you ensure the security of high-value shipments?</h3>
+                <div class="faq-content">
+                  <p>We employ multiple security measures including GPS tracking, tamper-evident seals, dedicated transport, and secure storage facilities. For high-value shipments, we offer enhanced insurance options and specialized handling protocols.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Faq Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">GSL</span>
+          </a>
+          <p>Global Shipping & Logistics provides reliable freight forwarding and supply chain solutions from Dubai to destinations worldwide. With decades of experience and a commitment to excellence, we ensure your goods reach their destination safely and on time.</p>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Air Freight</a></li>
+            <li><a href="#">Ocean Freight</a></li>
+            <li><a href="#">Land Transportation</a></li>
+            <li><a href="#">Warehousing</a></li>
+            <li><a href="#">Customs Clearance</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>Dubai Logistics City</p>
+          <p>Dubai South, PO Box 12345</p>
+          <p>United Arab Emirates</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+971 4 123 4567</span></p>
+          <p><strong>Email:</strong> <span>info@gsl-logistics.ae</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Global Shipping & Logistics</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+         <a href="https://bootstrapmade.com/"></a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Firebase and Tracking Script -->
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YAIzaSyB79rtnG35-B2OArWAL5BHzy12o9OF872k",
+      authDomain: "gsllogistics-af09a.firebaseapp.com",
+      projectId: "gsllogistics-af09a",
+      storageBucket: "gsllogistics-af09a.firebasestorage.app",
+      messagingSenderId: "901530094546",
+      appId: "1:901530094546:web:08ac39cc7252958b9b160b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // TomTom API Key (Free tier - replace with your own key)
+    const TOMTOM_API_KEY = 'YOUR_TOMTOM_API_KEY'; // Get free key from https://developer.tomtom.com/
+
+    // Map of city coordinates
+    const cityCoordinates = {
+      "Dubai, UAE": { lat: 25.276987, lng: 55.296249 },
+      "Shanghai, China": { lat: 31.230416, lng: 121.473701 },
+      "Singapore": { lat: 1.352083, lng: 103.819836 },
+      "Rotterdam, Netherlands": { lat: 51.9225, lng: 4.47917 },
+      "Los Angeles, USA": { lat: 34.052235, lng: -118.243683 },
+      "London, UK": { lat: 51.507351, lng: -0.127758 },
+      "New York, USA": { lat: 40.712776, lng: -74.005974 },
+      "Tokyo, Japan": { lat: 35.676422, lng: 139.650028 },
+      "Sydney, Australia": { lat: -33.86882, lng: 151.209296 },
+      "Cape Town, South Africa": { lat: -33.92487, lng: 18.424055 },
+      "Mumbai, India": { lat: 19.075983, lng: 72.877655 }
+    };
+
+    // Global variables
+    let map; // TomTom map object
+    let shipMarker = null;
+    let routeLine = null;
+
+    // Initialize TomTom Map
+    function initMap(center = [25.276987, 55.296249], zoom = 4) {
+      if (map) {
+        map.remove();
+      }
+      
+      // Create TomTom map
+      map = tt.map({
+        key: TOMTOM_API_KEY,
+        container: 'trackingMap',
+        center: center,
+        zoom: zoom,
+        language: 'en-GB' // English language
+      });
+      
+      // Add navigation control
+      map.addControl(new tt.NavigationControl());
+    }
+
+    // Display goods images
+    function displayGoodsImages(images) {
+      const container = document.getElementById('goodsImagesContainer');
+      const grid = document.getElementById('goodsImagesGrid');
+      grid.innerHTML = '';
+      
+      if (images && images.length > 0) {
+        container.style.display = 'block';
+        
+        images.forEach((image, index) => {
+          const imageElement = document.createElement('div');
+          imageElement.className = 'goods-image-item';
+          imageElement.innerHTML = `
+            <img src="${image.url}" alt="Goods image ${index + 1}" onclick="openModal('${image.url}')">
+          `;
+          grid.appendChild(imageElement);
+        });
+      } else {
+        container.style.display = 'none';
+      }
+    }
+
+    // Open image modal
+    function openModal(imageUrl) {
+      const modal = document.getElementById('goodsImageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'block';
+      modalImg.src = imageUrl;
+    }
+
+    // Close image modal
+    function closeModal() {
+      document.getElementById('goodsImageModal').style.display = 'none';
+    }
+
+    // Display shipment on map
+    function displayShipmentOnMap(shipment) {
+      if (!shipment) return;
+      
+      // Clear existing markers and route
+      if (shipMarker) {
+        shipMarker.remove();
+      }
+      if (routeLine) {
+        routeLine.remove();
+      }
+      
+      // Update progress bar
+      const progress = shipment.progress || 0;
+      document.getElementById('journeyProgress').style.width = `${progress}%`;
+      document.getElementById('journeyProgress').setAttribute('aria-valuenow', progress);
+      document.getElementById('progressPercentage').textContent = `${progress}% Complete`;
+      
+      // Get coordinates for origin and destination
+      const originCoords = cityCoordinates[shipment.origin] || cityCoordinates["Dubai, UAE"];
+      const destCoords = cityCoordinates[shipment.destination] || cityCoordinates["London, UK"];
+      
+      // Add markers for origin and destination
+      new tt.Marker()
+        .setLngLat([originCoords.lng, originCoords.lat])
+        .setPopup(new tt.Popup().setHTML(`Origin: ${shipment.origin}`))
+        .addTo(map);
+      
+      new tt.Marker()
+        .setLngLat([destCoords.lng, destCoords.lat])
+        .setPopup(new tt.Popup().setHTML(`Destination: ${shipment.destination}`))
+        .addTo(map);
+      
+      // Draw a line between origin and destination
+      routeLine = new tt.Polyline({
+        color: '#0066cc',
+        width: 4
+      })
+      .setCoordinates([
+        [originCoords.lng, originCoords.lat],
+        [destCoords.lng, destCoords.lat]
+      ])
+      .addTo(map);
+      
+      // Add marker for current location if available
+      if (shipment.currentLocation && shipment.currentLocation.lat && shipment.currentLocation.lng) {
+        const currentLocation = { 
+          lat: shipment.currentLocation.lat, 
+          lng: shipment.currentLocation.lng 
+        };
+        
+        // Create custom ship marker
+        const shipIcon = document.createElement('div');
+        shipIcon.className = 'ship-icon';
+        
+        shipMarker = new tt.Marker({ element: shipIcon })
+          .setLngLat([currentLocation.lng, currentLocation.lat])
+          .setPopup(new tt.Popup().setHTML(`Current Location: ${currentLocation.lat.toFixed(4)}, ${currentLocation.lng.toFixed(4)}`))
+          .addTo(map);
+        
+        // Center map on current location
+        map.setCenter([currentLocation.lng, currentLocation.lat]);
+        map.setZoom(6);
+      } else {
+        // Use origin as default location
+        const shipIcon = document.createElement('div');
+        shipIcon.className = 'ship-icon';
+        
+        shipMarker = new tt.Marker({ element: shipIcon })
+          .setLngLat([originCoords.lng, originCoords.lat])
+          .setPopup(new tt.Popup().setHTML(`Current Location: ${originCoords.lat.toFixed(4)}, ${originCoords.lng.toFixed(4)}`))
+          .addTo(map);
+        
+        // Fit map to show both origin and destination
+        const bounds = new tt.LngLatBounds()
+          .extend([originCoords.lng, originCoords.lat])
+          .extend([destCoords.lng, destCoords.lat]);
+        map.fitBounds(bounds, { padding: 50 });
+      }
+      
+      // Calculate distance and ETA
+      const distance = calculateDistance(
+        originCoords.lat, originCoords.lng,
+        destCoords.lat, destCoords.lng
+      );
+      
+      const eta = calculateETA(distance, progress);
+      document.getElementById('estimatedTime').innerHTML = `
+        <i class="bi bi-clock me-1"></i>ETA: ${eta.hours}h ${eta.minutes}m (${eta.date})
+      `;
+    }
+
+    // Calculate distance between two coordinates (Haversine formula)
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Earth's radius in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c; // Distance in km
+    }
+
+    // Calculate estimated time of arrival
+    function calculateETA(distanceKm, progress, avgSpeedKnots = 20) {
+      // Convert knots to km/h (1 knot = 1.852 km/h)
+      const speedKmh = avgSpeedKnots * 1.852;
+      
+      // Calculate remaining distance
+      const remainingDistance = distanceKm * (1 - progress/100);
+      
+      // Calculate remaining time in hours
+      const remainingHours = remainingDistance / speedKmh;
+      
+      // Calculate ETA
+      const now = new Date();
+      const eta = new Date(now.getTime() + remainingHours * 60 * 60 * 1000);
+      
+      return {
+        hours: Math.floor(remainingHours),
+        minutes: Math.floor((remainingHours % 1) * 60),
+        date: eta.toLocaleDateString(),
+        time: eta.toLocaleTimeString()
+      };
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize map with default view
+      initMap();
+      
+      // Add event listener for modal close
+      document.querySelector('.goods-modal-close').addEventListener('click', closeModal);
+      
+      // Close modal when clicking outside the image
+      window.addEventListener('click', function(event) {
+        const modal = document.getElementById('goodsImageModal');
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+      
+      // Tracking form submission
+      document.getElementById('trackingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const trackingNumber = document.getElementById('trackingInput').value.trim();
+        
+        if (!trackingNumber) {
+          alert('Please enter a tracking number');
+          return;
+        }
+        
+        // Extract ID from tracking number (assuming format GSL-123456)
+        const id = trackingNumber.includes('-') ? trackingNumber.split('-')[1] : trackingNumber;
+        
+        // Fetch shipment from Firebase
+        db.collection("shipments").doc(id).get()
+          .then((doc) => {
+            if (doc.exists) {
+              const shipment = { id: doc.id, ...doc.data() };
+              
+              // Display tracking results
+              document.getElementById('trackingNumberDisplay').textContent = shipment.trackingCode;
+              document.getElementById('clientName').textContent = shipment.clientName;
+              document.getElementById('clientAddress').textContent = shipment.clientAddress || 'Not provided';
+              document.getElementById('goodsDescription').textContent = shipment.goodsDescription;
+              document.getElementById('goodsWeight').textContent = shipment.goodsWeight;
+              document.getElementById('estimatedDelivery').textContent = shipment.estimatedDelivery;
+              document.getElementById('origin').textContent = shipment.origin;
+              document.getElementById('destination').textContent = shipment.destination;
+              
+              // Display goods images
+              displayGoodsImages(shipment.goodsImages);
+              
+              let currentLocation = shipment.origin;
+              if (shipment.currentLocation && shipment.currentLocation.lat && shipment.currentLocation.lng) {
+                currentLocation = `${shipment.currentLocation.lat.toFixed(4)}, ${shipment.currentLocation.lng.toFixed(4)}`;
+              }
+              document.getElementById('currentLocation').textContent = currentLocation;
+              
+              let statusText = '';
+              switch(shipment.status) {
+                case 'active': statusText = 'In Transit'; break;
+                case 'paused': statusText = 'Paused'; break;
+                case 'delivered': statusText = 'Delivered'; break;
+                default: statusText = shipment.status;
+              }
+              document.getElementById('status').textContent = statusText;
+              
+              // Update map with shipment details
+              displayShipmentOnMap(shipment);
+              
+              // Show tracking results, hide hero section
+              document.getElementById('hero').style.display = 'none';
+              document.getElementById('tracking-results').style.display = 'block';
+              document.getElementById('tracking-not-found').style.display = 'none';
+              
+            } else {
+              // Shipment not found
+              document.getElementById('notFoundTrackingNumber').textContent = trackingNumber;
+              document.getElementById('hero').style.display = 'none';
+              document.getElementById('tracking-results').style.display = 'none';
+              document.getElementById('tracking-not-found').style.display = 'block';
+            }
+          })
+          .catch((error) => {
+            console.error("Error getting shipment: ", error);
+            alert('Error tracking shipment. Please try again.');
+          });
+      });
+      
+      // Track another shipment button
+      document.getElementById('trackAnotherBtn').addEventListener('click', function() {
+        document.getElementById('trackingInput').value = '';
+        document.getElementById('tracking-results').style.display = 'none';
+        document.getElementById('tracking-not-found').style.display = 'none';
+        document.getElementById('hero').style.display = 'block';
+        
+        // Reset map to default view
+        initMap();
+      });
+      
+      // Try again button
+      document.getElementById('tryAgainBtn').addEventListener('click', function() {
+        document.getElementById('trackingInput').value = '';
+        document.getElementById('tracking-results').style.display = 'none';
+        document.getElementById('tracking-not-found').style.display = 'none';
+        document.getElementById('hero').style.display = 'block';
+      });
+    });
+  </script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
